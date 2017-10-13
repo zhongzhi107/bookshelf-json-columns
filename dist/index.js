@@ -46,7 +46,11 @@ function parse(model, response) {
 
   this.constructor.jsonColumns.forEach(column => {
     if (this.attributes[column]) {
-      this.attributes[column] = JSON.parse(this.attributes[column]);
+      try {
+        this.attributes[column] = JSON.parse(this.attributes[column]);
+      } catch (e) {
+        console.log(`###${this.attributes[column]}### is an invalid JSON`);
+      }
     }
   });
 }
@@ -111,7 +115,11 @@ exports.default = Bookshelf => {
         // Parse JSON columns.
         Object.keys(attributes).forEach(attribute => {
           if (this.constructor.jsonColumns.indexOf(attribute) !== -1 && model.attributes[attribute]) {
-            model.attributes[attribute] = JSON.parse(model.attributes[attribute]);
+            try {
+              model.attributes[attribute] = JSON.parse(model.attributes[attribute]);
+            } catch (e) {
+              console.log(`###${model.attributes[attribute]}### is an invalid JSON`);
+            }
           }
         });
 
